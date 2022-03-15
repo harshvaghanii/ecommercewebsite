@@ -1,6 +1,7 @@
+import { useState } from "react";
 import ListItems from "./ListItems/ListItems";
 const Products = () => {
-    const data = [
+    const [items, setItem] = useState([
         {
             id: 0,
             title: "Title of Item 1",
@@ -15,12 +16,21 @@ const Products = () => {
             discountedPrice: 80,
             thumbnail: "placeholder.png",
         },
-    ];
+        {
+            id: 2,
+            title: "Title of Item 3",
+            originalPrice: 499,
+            discountedPrice: 249,
+            thumbnail: "placeholder.png",
+        },
+    ]);
+
     return (
         <div className={"product-list"}>
             <div className={"product-list--wrapper"}>
-                <ListItems data={data[0]} />
-                <ListItems data={data[1]} />
+                {items.map((props) => {
+                    return <ListItems key={`${props.id}`} data={props} />;
+                })}
             </div>
         </div>
     );
