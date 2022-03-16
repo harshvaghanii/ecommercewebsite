@@ -1,8 +1,9 @@
 import Products from "./components/Products/Products";
 import Header from "./components/Layout/Header/Header";
 import SubHeader from "./components/Layout/SubHeader/SubHeader";
+import { useState } from "react";
 
-function App() {
+const App = () => {
     return (
         <div>
             <Header />
@@ -10,6 +11,6 @@ function App() {
             <Products />
         </div>
     );
-}
+};
 
 export default App;
