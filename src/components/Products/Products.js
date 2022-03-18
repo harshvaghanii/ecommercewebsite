@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ListItems from "./ListItems/ListItems";
+import Loader from "../UI/Loader";
+
 const Products = () => {
     const url = "https://toykart-3ba5e-default-rtdb.firebaseio.com/items.json";
     const [items, setItem] = useState([]);
+    const [loader, setLoader] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -18,17 +21,19 @@ const Products = () => {
                 setItem(transformedData);
             } catch (error) {
                 console.log(error);
+            } finally {
+                setLoader(false);
             }
         };
-
         fetchData();
     }, []);
 
     return (
         <div className={"product-list"}>
+            {loader && <Loader />}
             <div className={"product-list--wrapper"}>
-                {items.map((props) => {
-                    return <ListItems key={`${props.id}`} data={props} />;
+                {items.map((element) => {
+                    return <ListItems key={`${element.id}`} data={element} />;
                 })}
             </div>
         </div>
