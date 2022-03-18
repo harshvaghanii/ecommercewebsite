@@ -20,14 +20,13 @@ const ListItems = ({ data }) => {
                 <div className={"pricing"}>
                     <span> ₹{data.discountedPrice} </span>
                     <small>
-                        <strike> ₹{data.originalPrice} </strike>
+                        <strike> ₹{data.price} </strike>
                     </small>
                 </div>
                 <div className={"title"}>
                     <h3> {data.title} </h3>
                 </div>
             </div>
-
             {quantity < 1 ? (
                 <button className={"cart-add"} onClick={incrementQuantity}>
                     <span> Add to Cart! </span>
@@ -36,11 +35,11 @@ const ListItems = ({ data }) => {
             ) : (
                 <div className="cart-addon">
                     <button onClick={decrementQuantity}>
-                        <span>-</span>
+                        <span> - </span>
                     </button>
-                    <span>{quantity}</span>
+                    <span> {quantity} </span>
                     <button onClick={incrementQuantity}>
-                        <span>+</span>
+                        <span> + </span>
                     </button>
                 </div>
             )}
