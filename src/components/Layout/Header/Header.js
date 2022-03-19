@@ -4,7 +4,7 @@ const Header = () => {
             <header>
                 <div className={"nav-brand"}>
                     <a to="/">
-                        <span>AmaKart</span>
+                        <span>ToyKart</span>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="icon icon-tabler icon-tabler-shopping-cart"
