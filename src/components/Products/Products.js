@@ -3,10 +3,25 @@ import { useEffect, useState } from "react";
 import ListItems from "./ListItems/ListItems";
 import Loader from "../UI/Loader";
 
-const Products = () => {
+const Products = ({ onAddItem, onRemoveItem }) => {
     const url = "https://toykart-3ba5e-default-rtdb.firebaseio.com/items.json";
     const [items, setItem] = useState([]);
     const [loader, setLoader] = useState(true);
+    const [itemArray, setItemArray] = useState([]);
+    const onAdd = (id) => {
+        if (itemArray.indexOf(id) > -1) return;
+        setItemArray([...itemArray, id]);
+        onAddItem();
+    };
+
+    const onRemove = (id) => {
+        const index = itemArray.indexOf(id);
+        let items = [...itemArray];
+        items.splice(index, 1);
+        setItemArray([...items]);
+        onRemoveItem();
+    };
+    // Effect Hook
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,7 +48,14 @@ const Products = () => {
             {loader && <Loader />}
             <div className={"product-list--wrapper"}>
                 {items.map((element) => {
-                    return <ListItems key={`${element.id}`} data={element} />;
+                    return (
+                        <ListItems
+                            key={`${element.id}`}
+                            data={element}
+                            onAdd={onAdd}
+                            onRemove={onRemove}
+                        />
+                    );
                 })}
             </div>
         </div>

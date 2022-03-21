@@ -4,11 +4,24 @@ import SubHeader from "./components/Layout/SubHeader/SubHeader";
 import { useState } from "react";
 
 const App = () => {
+    const [cartItems, setCartItems] = useState(0);
+
+    const handleAddItems = () => {
+        setCartItems(cartItems + 1);
+    };
+
+    const handleRemoveItems = () => {
+        setCartItems(cartItems - 1);
+    };
+
     return (
         <div>
-            <Header />
+            <Header count={cartItems} />
             <SubHeader></SubHeader>
-            <Products />
+            <Products
+                onAddItem={handleAddItems}
+                onRemoveItem={handleRemoveItems}
+            />
         </div>
     );
 };
