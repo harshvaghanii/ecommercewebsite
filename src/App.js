@@ -17,7 +17,7 @@ const App = () => {
     return (
         <div>
             <Header count={cartItems} />
-            <SubHeader></SubHeader>
+            <SubHeader />
             <Products
                 onAddItem={handleAddItems}
                 onRemoveItem={handleRemoveItems}

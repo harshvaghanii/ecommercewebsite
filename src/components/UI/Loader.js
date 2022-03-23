@@ -1,8 +1,8 @@
 import ReactDom from "react-dom";
 export const Backdrop = (props) => {
-    const handleClick = () => {
+    const handleClick = (e) => {
         if (props.onClose) {
-            props.onClose();
+            props.onClose(e);
         }
     };
     return <div onClick={handleClick} className="loader-overlay"></div>;

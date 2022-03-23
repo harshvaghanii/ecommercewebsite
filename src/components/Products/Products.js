@@ -7,7 +7,9 @@ const Products = ({ onAddItem, onRemoveItem }) => {
     const url = "https://toykart-3ba5e-default-rtdb.firebaseio.com/items.json";
     const [items, setItem] = useState([]);
     const [loader, setLoader] = useState(true);
+    // The below array is used to store the id of the elements that are already present in thea cart
     const [itemArray, setItemArray] = useState([]);
+
     const onAdd = (id) => {
         if (itemArray.indexOf(id) > -1) return;
         setItemArray([...itemArray, id]);
