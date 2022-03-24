@@ -11,17 +11,30 @@ const Products = ({ onAddItem, onRemoveItem }) => {
     const [itemArray, setItemArray] = useState([]);
 
     const onAdd = (id) => {
-        if (itemArray.indexOf(id) > -1) return;
-        setItemArray([...itemArray, id]);
-        onAddItem();
+        // if (itemArray.indexOf(id) > -1) return;
+        // setItemArray([...itemArray, id]);
+        // onAddItem();
+        let data = [...items];
+        const index = items.findIndex((i) => i.id == id);
+        data[index].quantity += 1;
+        setItem([...data]);
+        onAddItem(data[index]);
+        // if (items[id].quantity == 1) onAddItem();
     };
 
     const onRemove = (id) => {
-        const index = itemArray.indexOf(id);
-        let items = [...itemArray];
-        items.splice(index, 1);
-        setItemArray([...items]);
-        onRemoveItem();
+        // const index = itemArray.indexOf(id);
+        // let items = [...itemArray];
+        // items.splice(index, 1);
+        // setItemArray([...items]);
+        // onRemoveItem();
+        let data = [...items];
+        const index = items.findIndex((i) => i.id == id);
+        if (data[index].quantity !== 0) {
+            data[index].quantity -= 1;
+            setItem([...data]);
+            onRemoveItem(data[index]);
+        }
     };
     // Effect Hook
 
@@ -33,6 +46,7 @@ const Products = ({ onAddItem, onRemoveItem }) => {
                     return {
                         ...element,
                         id: index,
+                        quantity: 0,
                     };
                 });
                 setItem(transformedData);
