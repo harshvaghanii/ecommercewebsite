@@ -5,7 +5,10 @@ import { useState } from "react";
 
 const App = () => {
     const [cartItems, setCartItems] = useState([]);
-
+    const [cartAction, setCartAction] = useState({
+        id: "",
+        type: "",
+    });
     const handleAddItems = (item) => {
         const data = [...cartItems];
         const index = data.findIndex((i) => i.id === item.id);
@@ -27,14 +30,24 @@ const App = () => {
         }
         setCartItems([...data]);
     };
-
+    const handleCartAction = (id, type) => {
+        setCartAction({
+            id,
+            type,
+        });
+    };
     return (
         <div>
-            <Header count={cartItems.length} items={cartItems} />
+            <Header
+                count={cartItems.length}
+                items={cartItems}
+                cartAction={handleCartAction}
+            />
             <SubHeader />
             <Products
                 onAddItem={handleAddItems}
                 onRemoveItem={handleRemoveItems}
+                onCartItemStateChange={cartAction}
             />
         </div>
     );

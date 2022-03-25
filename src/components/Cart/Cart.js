@@ -1,12 +1,19 @@
 import { Fragment, useState } from "react";
 import Modal from "../UI/Modal";
 import CartItem from "./CartItem";
-const Cart = ({ count, items }) => {
+import OrderSuccess from "../UI/OrderSuccess";
+const Cart = ({ count, items, cartAction }) => {
     const [showModal, setShowModal] = useState(false);
-
+    const [orderStatus, setOrderStatus] = useState(false);
     const handleModal = (e) => {
         e.stopPropagation();
         setShowModal((previousState) => !previousState);
+    };
+
+    const handleOrderItems = (e) => {
+        e.stopPropagation();
+        setOrderStatus((previousState) => !previousState);
+        setShowModal(false);
     };
 
     return (
@@ -47,7 +54,16 @@ const Cart = ({ count, items }) => {
                                 ) : (
                                     items.map((i) => {
                                         return (
-                                            <CartItem props={i} key={i.id} />
+                                            <CartItem
+                                                props={i}
+                                                key={i.id}
+                                                onIncrement={(id) => {
+                                                    cartAction(id, 1);
+                                                }}
+                                                onDecrement={(id) => {
+                                                    cartAction(id, -1);
+                                                }}
+                                            />
                                         );
                                     })
                                 )}
@@ -70,12 +86,16 @@ const Cart = ({ count, items }) => {
                                             INR
                                         </h4>
                                     </div>
-                                    <button>Order Now</button>
+                                    <button onClick={handleOrderItems}>
+                                        Order Now
+                                    </button>
                                 </div>
                             )}
                         </div>
                     </Modal>
                 )}
+
+                {orderStatus && <OrderSuccess onClose={handleOrderItems} />}
             </div>
         </Fragment>
     );

@@ -1,5 +1,5 @@
-import Cart from "../../Cart";
-const Header = ({ count, items }) => {
+import Cart from "../../Cart/Cart";
+const Header = ({ count, items, cartAction }) => {
     return (
         <div>
             <header>
@@ -74,7 +74,7 @@ const Header = ({ count, items }) => {
                         <line x1="21" y1="21" x2="15" y2="15" />
                     </svg>
                 </div>
-                <Cart count={count} items={items} />
+                <Cart count={count} items={items} cartAction={cartAction} />
             </header>
         </div>
     );

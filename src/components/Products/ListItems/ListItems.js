@@ -2,19 +2,14 @@ import { Fragment, useState } from "react";
 import Modal from "../../UI/Modal";
 import AddToCartIcon from "../../../assets/icons/add_cart.svg";
 const ListItems = ({ data, onAdd, onRemove }) => {
-    // const [quantity, changeQuantity] = useState(0);
     const [showModal, setShowModal] = useState(false);
     const decrementQuantity = (e) => {
         e.stopPropagation();
-        // if (quantity == 1) onRemove(data.id);
-        // if (quantity > 0) changeQuantity(quantity - 1);
         onRemove(data.id);
     };
 
     const incrementQuantity = (e) => {
         e.stopPropagation();
-        // onAdd(data.id);
-        // changeQuantity(quantity + 1);
         onAdd(data.id);
     };
     const handleModal = () => {

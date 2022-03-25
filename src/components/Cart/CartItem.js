@@ -1,5 +1,13 @@
-const CartItem = ({ props }) => {
-    console.log(props);
+const CartItem = ({ props, onIncrement, onDecrement }) => {
+    const handleIncrement = (e) => {
+        e.stopPropagation();
+        onIncrement(props.id);
+    };
+
+    const handleDecrement = (e) => {
+        e.stopPropagation();
+        onDecrement(props.id);
+    };
     return (
         <div className="checkout-modal_list-item">
             <div className="img-wrap">
@@ -20,9 +28,9 @@ const CartItem = ({ props }) => {
                     </div>
                 </div>
                 <div className="cart-addon cart-addon__modal">
-                    <button>-</button>
+                    <button onClick={handleDecrement}>-</button>
                     <span className="counter">{props.quantity}</span>
-                    <button>+</button>
+                    <button onClick={handleIncrement}>+</button>
                 </div>
             </div>
         </div>
