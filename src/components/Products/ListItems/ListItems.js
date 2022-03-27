@@ -1,17 +1,30 @@
 import { Fragment, useState } from "react";
 import Modal from "../../UI/Modal";
 import AddToCartIcon from "../../../assets/icons/add_cart.svg";
-const ListItems = ({ data, onAdd, onRemove }) => {
+import { useSelector, useDispatch } from "react-redux";
+import {
+    addItemEventHandler,
+    removeItemEventHandler,
+} from "../../../actions/actions";
+const ListItems = ({ data }) => {
+    const item = useSelector((state) =>
+        state.items.find((i) => i.id === data.id)
+    );
+
+    const dispatch = useDispatch();
+
     const [showModal, setShowModal] = useState(false);
-    const decrementQuantity = (e) => {
-        e.stopPropagation();
-        onRemove(data.id);
-    };
 
     const incrementQuantity = (e) => {
         e.stopPropagation();
-        onAdd(data.id);
+        dispatch(addItemEventHandler(data));
     };
+
+    const decrementQuantity = (e) => {
+        e.stopPropagation();
+        dispatch(removeItemEventHandler(data.id));
+    };
+
     const handleModal = () => {
         setShowModal((previousState) => !previousState);
     };
@@ -34,7 +47,7 @@ const ListItems = ({ data, onAdd, onRemove }) => {
                         <h3> {data.title} </h3>
                     </div>
                 </div>
-                {data.quantity < 1 ? (
+                {!item || item.quantity < 1 ? (
                     <button className={"cart-add"} onClick={incrementQuantity}>
                         <span> Add to Cart! </span>
                         <img src={AddToCartIcon} alt="Cart Icon" />
@@ -44,7 +57,7 @@ const ListItems = ({ data, onAdd, onRemove }) => {
                         <button onClick={decrementQuantity}>
                             <span> - </span>
                         </button>
-                        <span> {data.quantity} </span>
+                        <span> {item.quantity} </span>
                         <button onClick={incrementQuantity}>
                             <span> + </span>
                         </button>
@@ -72,7 +85,7 @@ const ListItems = ({ data, onAdd, onRemove }) => {
                                 </div>
                             </div>
                             <p>{data.description}</p>
-                            {data.quantity < 1 ? (
+                            {!item || item.quantity < 1 ? (
                                 <button
                                     className={"cart-add cart-add__modal"}
                                     onClick={incrementQuantity}
@@ -85,7 +98,7 @@ const ListItems = ({ data, onAdd, onRemove }) => {
                                     <button onClick={decrementQuantity}>
                                         <span> - </span>
                                     </button>
-                                    <span> {data.quantity} </span>
+                                    <span> {item.quantity} </span>
                                     <button onClick={incrementQuantity}>
                                         <span> + </span>
                                     </button>

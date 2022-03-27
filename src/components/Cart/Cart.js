@@ -2,7 +2,14 @@ import { Fragment, useState } from "react";
 import Modal from "../UI/Modal";
 import CartItem from "./CartItem";
 import OrderSuccess from "../UI/OrderSuccess";
-const Cart = ({ count, items, cartAction }) => {
+import { useDispatch, useSelector } from "react-redux";
+import {
+    addItemEventHandler,
+    removeItemEventHandler,
+    emptyCart,
+} from "../../actions/actions";
+
+const Cart = () => {
     const [showModal, setShowModal] = useState(false);
     const [orderStatus, setOrderStatus] = useState(false);
     const handleModal = (e) => {
@@ -10,17 +17,30 @@ const Cart = ({ count, items, cartAction }) => {
         setShowModal((previousState) => !previousState);
     };
 
+    // Redux logic
+
+    const cartItems = useSelector((state) => state.items);
+    const dispatch = useDispatch();
+    const totalAmount = useSelector((state) => state.totalAmount);
+    const dispatchEvent = (item, type) => {
+        if (type === 1) {
+            dispatch(addItemEventHandler(item));
+        } else {
+            dispatch(removeItemEventHandler(item.id));
+        }
+    };
+
     const handleOrderItems = (e) => {
         e.stopPropagation();
         setOrderStatus((previousState) => !previousState);
         setShowModal(false);
+        dispatch(emptyCart());
     };
-
     return (
         <Fragment>
             <div className="cart-container" onClick={handleModal}>
                 <button>
-                    <span data-items={count}>Cart</span>
+                    <span data-items={cartItems.length}>Cart</span>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="icon icon-tabler icon-tabler-shopping-cart-plus"
@@ -47,44 +67,32 @@ const Cart = ({ count, items, cartAction }) => {
                         <div className="checkout-modal">
                             <h2>Checkout Modal</h2>
                             <div className="checkout-modal_list">
-                                {count < 1 ? (
+                                {cartItems.length < 1 ? (
                                     <div className="empty-cart">
                                         The cart is empty!
                                     </div>
                                 ) : (
-                                    items.map((i) => {
+                                    cartItems.map((i) => {
                                         return (
                                             <CartItem
                                                 props={i}
                                                 key={i.id}
-                                                onIncrement={(id) => {
-                                                    cartAction(id, 1);
+                                                onIncrement={(item) => {
+                                                    dispatchEvent(item, 1);
                                                 }}
-                                                onDecrement={(id) => {
-                                                    cartAction(id, -1);
+                                                onDecrement={(item) => {
+                                                    dispatchEvent(item, -1);
                                                 }}
                                             />
                                         );
                                     })
                                 )}
                             </div>
-                            {count > 0 && (
+                            {cartItems.length > 0 && (
                                 <div className="checkout-modal_footer">
                                     <div className="totalAmount">
                                         <h4>Total Amount:</h4>
-                                        <h4>
-                                            {items.reduce(
-                                                (previous, current) => {
-                                                    return (
-                                                        previous +
-                                                        current.discountedPrice *
-                                                            current.quantity
-                                                    );
-                                                },
-                                                0
-                                            )}{" "}
-                                            INR
-                                        </h4>
+                                        <h4>{totalAmount} INR</h4>
                                     </div>
                                     <button onClick={handleOrderItems}>
                                         Order Now

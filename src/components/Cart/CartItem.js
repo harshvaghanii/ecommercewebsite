@@ -1,12 +1,12 @@
 const CartItem = ({ props, onIncrement, onDecrement }) => {
     const handleIncrement = (e) => {
         e.stopPropagation();
-        onIncrement(props.id);
+        onIncrement(props);
     };
 
     const handleDecrement = (e) => {
         e.stopPropagation();
-        onDecrement(props.id);
+        onDecrement(props);
     };
     return (
         <div className="checkout-modal_list-item">

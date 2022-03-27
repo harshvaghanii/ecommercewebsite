@@ -1,9 +1,10 @@
 const mainReducer = (state, action) => {
     const { type, payload } = action;
+    let items, amount, index;
     switch (type) {
         case "ADD_ITEM":
-            let items = [...state.items];
-            let index = items.findIndex((i) => i.id == payload.item.id);
+            items = [...state.items];
+            index = items.findIndex((i) => i.id == payload.item.id);
             if (index > -1) {
                 items[index] = {
                     ...items[index],
@@ -15,7 +16,7 @@ const mainReducer = (state, action) => {
                     quantity: 1,
                 });
             }
-            let amount = state.totalAmount + payload.item.discountedPrice;
+            amount = state.totalAmount + payload.item.discountedPrice;
             return {
                 ...state,
                 items: items,
