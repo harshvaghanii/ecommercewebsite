@@ -1,6 +1,7 @@
 const mainReducer = (state, action) => {
     const { type, payload } = action;
     let items, amount, index;
+
     switch (type) {
         case "ADD_ITEM":
             items = [...state.items];

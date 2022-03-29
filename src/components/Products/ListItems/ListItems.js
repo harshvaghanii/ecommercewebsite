@@ -6,6 +6,9 @@ import {
     addItemEventHandler,
     removeItemEventHandler,
 } from "../../../actions/actions";
+
+// Imports completed
+
 const ListItems = ({ data }) => {
     const item = useSelector((state) =>
         state.items.find((i) => i.id === data.id)
