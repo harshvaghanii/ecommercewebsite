@@ -2,11 +2,19 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import ListItems from "./ListItems/ListItems";
 import Loader from "../UI/Loader";
+import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Products = () => {
-    const url = "https://toykart-3ba5e-default-rtdb.firebaseio.com/items.json";
+    const { category } = useParams();
+    const slug = category ? `items-${category}.json` : `items.json`;
+    const url = `https://toykart-3ba5e-default-rtdb.firebaseio.com/${slug}`;
     const [items, setItem] = useState([]);
     const [loader, setLoader] = useState(true);
+    const history = useHistory();
+    const handleNotFound = () => {
+        history.replace("/404");
+    };
 
     // Effect Hooks
 
@@ -14,7 +22,12 @@ const Products = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(url);
-                const transformedData = response.data.map((element, index) => {
+                const data = response.data;
+                if (!data) {
+                    handleNotFound();
+                    return;
+                }
+                const transformedData = data.map((element, index) => {
                     return {
                         ...element,
                         id: index,
@@ -22,13 +35,18 @@ const Products = () => {
                 });
                 setItem(transformedData);
             } catch (error) {
-                console.log(error);
+                alert(error);
             } finally {
                 setLoader(false);
             }
         };
         fetchData();
-    }, []);
+
+        return () => {
+            setItem([]);
+            setLoader(true);
+        };
+    }, [category]);
 
     return (
         <div className={"product-list"}>
