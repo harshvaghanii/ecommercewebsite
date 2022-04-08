@@ -10,6 +10,8 @@ const store = createStore(
         totalAmount: 0,
     },
     composeWithDevTools(applyMiddleware(thunk))
+
+    // The composeWithDevTools is used to see the visualisation of states in the console tab
 );
 
 export default store;

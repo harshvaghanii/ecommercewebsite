@@ -2,12 +2,17 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import ListItems from "./ListItems/ListItems";
 import Loader from "../UI/Loader";
-import { useParams } from "react-router-dom";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Products = () => {
     const { category } = useParams();
-    const slug = category ? `items-${category}.json` : `items.json`;
+    let slug = category ? `items-${category}.json` : `items.json`;
+    const { search } = useLocation();
+    const queryParams = new URLSearchParams(search).get("search");
+    if (queryParams) {
+        slug += `?search=${queryParams}`;
+    }
     const url = `https://toykart-3ba5e-default-rtdb.firebaseio.com/${slug}`;
     const [items, setItem] = useState([]);
     const [loader, setLoader] = useState(true);
@@ -46,7 +51,7 @@ const Products = () => {
             setItem([]);
             setLoader(true);
         };
-    }, [category]);
+    }, [category, queryParams]);
 
     return (
         <div className={"product-list"}>
