@@ -1,7 +1,14 @@
 import Cart from "../../Cart/Cart";
 import { NavLink } from "react-router-dom";
 import SearchBox from "../../UI/Search";
+import { useHistory } from "react-router-dom";
 const Header = () => {
+    const history = useHistory();
+    const handleAuth = (e) => {
+        e.preventDefault();
+        history.push("/login");
+    };
+
     return (
         <div>
             <header>
@@ -47,6 +54,9 @@ const Header = () => {
                         <line x1="21" y1="21" x2="15" y2="15" />
                     </svg>
                 </div>
+                <button className="login-btn" onClick={handleAuth}>
+                    Login / SignUp
+                </button>
                 <Cart />
             </header>
         </div>

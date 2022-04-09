@@ -2,6 +2,7 @@ import Products from "./components/Products/Products";
 import Header from "./components/Layout/Header/Header";
 import SubHeader from "./components/Layout/SubHeader/SubHeader";
 import NotFound from "./components/UI/404";
+import Auth from "./components/Auth/Auth";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 const App = () => {
@@ -13,6 +14,9 @@ const App = () => {
                 <Switch>
                     <Route exact path={"/404"}>
                         <NotFound />
+                    </Route>
+                    <Route exact path={"/:type(login|signup)"}>
+                        <Auth />
                     </Route>
                     <Route exact path="/:category?">
                         <Products />
