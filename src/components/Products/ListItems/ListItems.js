@@ -11,7 +11,7 @@ import {
 
 const ListItems = ({ data }) => {
     const item = useSelector((state) =>
-        state.items.find((i) => i.id === data.id)
+        state.cart.items.find((i) => i.id === data.id)
     );
 
     const dispatch = useDispatch();

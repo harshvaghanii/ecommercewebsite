@@ -2,11 +2,19 @@ import Cart from "../../Cart/Cart";
 import { NavLink } from "react-router-dom";
 import SearchBox from "../../UI/Search";
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../../actions/auth";
 const Header = () => {
     const history = useHistory();
+    const dispatch = useDispatch();
     const handleAuth = (e) => {
         e.preventDefault();
         history.push("/login");
+    };
+    const userStatus = useSelector((state) => state.auth);
+
+    const logoutHandler = (e) => {
+        dispatch(logoutUser());
     };
 
     return (
@@ -54,9 +62,25 @@ const Header = () => {
                         <line x1="21" y1="21" x2="15" y2="15" />
                     </svg>
                 </div>
-                <button className="login-btn" onClick={handleAuth}>
-                    Login / SignUp
-                </button>
+                {userStatus && userStatus.idToken ? (
+                    <div className="user-actions">
+                        <button title="User Profile" className="material-icons">
+                            account_circle
+                        </button>
+                        <button
+                            onClick={logoutHandler}
+                            title="Logout"
+                            className="material-icons"
+                        >
+                            logout
+                        </button>
+                    </div>
+                ) : (
+                    <button className="login-btn" onClick={handleAuth}>
+                        Login
+                    </button>
+                )}
+
                 <Cart />
             </header>
         </div>

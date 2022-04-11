@@ -16,8 +16,7 @@ header {
 
 .nav-brand,
 .cart-container {
-    a,
-    button {
+    a, button {
         display: flex;
         align-items: center;
         padding: 12px 32px;
@@ -39,8 +38,7 @@ header {
 .cart-container {
     display: flex;
 
-    a,
-    button {
+    a, button {
         margin: auto;
         background-color: unset;
         border: unset;
@@ -107,19 +105,18 @@ header {
 }
 
 // Media Queries
-@media screen and (max-width: 768px) {
+@media screen and (max-width:768px) {
+
     .nav-brand,
     .cart-container {
-        a,
-        button {
+        a, button {
             font-size: 22px;
             padding: 14px 16px;
         }
     }
 
     .cart-container {
-        a,
-        button {
+        a, button {
             font-size: 16px;
         }
     }
@@ -131,7 +128,7 @@ header {
     }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width:450px) {
     .cart-container {
         a span:first-child,
         button span:first-child {
@@ -146,5 +143,18 @@ header {
             margin-left: auto;
             display: block;
         }
+    }
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+
+    button {
+        color: $white;
+        background-color: unset;
+        border: unset;
+        margin: 0 10px;
+        cursor: pointer;
     }
 }

@@ -5,10 +5,7 @@ import mainReducer from "../reducers";
 
 const store = createStore(
     mainReducer,
-    {
-        items: [],
-        totalAmount: 0,
-    },
+    {},
     composeWithDevTools(applyMiddleware(thunk))
 
     // The composeWithDevTools is used to see the visualisation of states in the console tab

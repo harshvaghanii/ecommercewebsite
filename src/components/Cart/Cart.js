@@ -7,6 +7,7 @@ import {
     addItemEventHandler,
     removeItemEventHandler,
     emptyCart,
+    orderItem,
 } from "../../actions/actions";
 
 const Cart = () => {
@@ -16,12 +17,13 @@ const Cart = () => {
         e.stopPropagation();
         setShowModal((previousState) => !previousState);
     };
-
+    const [orderId, setOrderId] = useState("");
     // Redux logic
 
-    const cartItems = useSelector((state) => state.items);
+    const cartItems = useSelector((state) => state.cart.items);
+    const auth = useSelector((state) => state);
     const dispatch = useDispatch();
-    const totalAmount = useSelector((state) => state.totalAmount);
+    const totalAmount = useSelector((state) => state.cart.totalAmount);
     const dispatchEvent = (item, type) => {
         if (type === 1) {
             dispatch(addItemEventHandler(item));
@@ -36,6 +38,21 @@ const Cart = () => {
         setShowModal(false);
         dispatch(emptyCart());
     };
+
+    const orderHandler = () => {
+        dispatch(
+            orderItem((response) => {
+                if (!response.error) {
+                    setOrderId(response.data.name);
+                    setShowModal(false);
+                    setOrderStatus((previousState) => !previousState);
+                } else {
+                    console.log(response.message);
+                }
+            })
+        );
+    };
+
     return (
         <Fragment>
             <div className="cart-container" onClick={handleModal}>
@@ -94,7 +111,7 @@ const Cart = () => {
                                         <h4>Total Amount:</h4>
                                         <h4>{totalAmount} INR</h4>
                                     </div>
-                                    <button onClick={handleOrderItems}>
+                                    <button onClick={orderHandler}>
                                         Order Now
                                     </button>
                                 </div>
@@ -103,7 +120,12 @@ const Cart = () => {
                     </Modal>
                 )}
 
-                {orderStatus && <OrderSuccess onClose={handleOrderItems} />}
+                {orderStatus && (
+                    <OrderSuccess
+                        orderid={orderId}
+                        onClose={handleOrderItems}
+                    />
+                )}
             </div>
         </Fragment>
     );

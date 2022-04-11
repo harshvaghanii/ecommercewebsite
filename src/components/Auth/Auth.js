@@ -1,44 +1,60 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Loader from "../UI/Loader";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { handleLogIn, handleSignUp } from "../../actions/auth";
+import { useHistory } from "react-router-dom";
 const Auth = () => {
     const { type } = useParams();
+    const history = useHistory();
     const [details, setDetails] = useState({
         email: "",
         password: "",
     });
     const [loader, setLoader] = useState(false);
-
+    const dispatch = useDispatch();
     const handleInput = (e) => {
         setDetails({
             ...details,
             [e.target.name]: e.target.value,
         });
     };
-
+    useEffect(() => {
+        return () => {
+            setLoader(false);
+            setDetails({
+                email: "",
+                password: "",
+            });
+        };
+    }, []);
     const handleSubmission = (e) => {
         e.preventDefault();
         if (type == "signup") {
-            handleSignUp();
-        }
-    };
-
-    const handleSignUp = async () => {
-        try {
             setLoader(true);
-            const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA8enYP_u5ncneEztR4ABd_Z1BbqAIMBq4`;
-            const response = await axios.post(url, {
-                email: details.email,
-                password: details.password,
-                returnSecureToken: true,
-            });
-            console.log(response);
-        } catch (error) {
-            console.log(error.response.data.error.message);
-        } finally {
-            setLoader(false);
+            dispatch(
+                handleSignUp(details, (data) => {
+                    if (data.error) {
+                        console.log(`${data.error}`);
+                    } else {
+                        history.replace("/");
+                    }
+                    setLoader(false);
+                })
+            );
+        } else {
+            setLoader(true);
+            dispatch(
+                handleLogIn(details, (data) => {
+                    if (data.error) {
+                        console.log(data.response);
+                    } else {
+                        history.push("/");
+                    }
+                    setLoader(false);
+                })
+            );
         }
     };
 
